@@ -25,8 +25,12 @@ export async function config() {
   const { data } = graphql`
     {
       oldPosts: allMdx(
-        filter: { frontmatter: { date: { lt: "2022-01-01" } } }
-      ) {
+        filter: {frontmatter: {
+          latest: {
+            ne: true
+          }
+        }}
+        ) {
         nodes {
           fields {
             slug
@@ -36,11 +40,12 @@ export async function config() {
     }
   `
 
-  const oldPosts = new Set(data.oldPosts.nodes.map(n => n.frontmatter.slug))
+  const oldPosts = new Set(data.oldPosts.nodes.map(n => n.fields.slug))
+
 
   return ({ params }) => {
     return {
-      defer: oldPosts.has(params.fields.slug)
+      defer: oldPosts.has(`/${params.fields__slug}/`)
     }
   }
 }

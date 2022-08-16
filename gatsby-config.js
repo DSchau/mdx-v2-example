@@ -1,7 +1,5 @@
 const path = require('path')
 
-console.log(path.join(__dirname, 'content'))
-
 module.exports = {
   siteMetadata: {
     title: `mdx-v2-example`,
